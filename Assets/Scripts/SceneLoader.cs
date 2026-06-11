@@ -6,16 +6,21 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader Instance { get; private set; }
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void CreateInstance()
+    {
+        var go = new GameObject("SceneLoader");
+        Instance = go.AddComponent<SceneLoader>();
+        DontDestroyOnLoad(go);
+    }
+
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void LoadScene(string sceneName)
@@ -29,17 +34,14 @@ public class SceneLoader : MonoBehaviour
 
     private IEnumerator LoadRoutine(string sceneName)
     {
-        // сюда потом вставишь показ LoadingScreen
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
         operation.allowSceneActivation = false;
 
         while (operation.progress < 0.9f)
         {
-            // сюда передашь прогресс на LoadingScreen: operation.progress
             yield return null;
         }
 
-        // сюда потом вставишь скрытие LoadingScreen
         operation.allowSceneActivation = true;
     }
 }

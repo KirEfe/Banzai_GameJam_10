@@ -520,19 +520,7 @@ MonoBehaviour:
       m_Calls: []
   onClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1287525927}
-        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
-        m_MethodName: OnExitButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &638752984
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -576,7 +564,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 638752985}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1287525927}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnExitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &638752985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,7 +1036,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1287525929}
-  - component: {fileID: 1287525928}
   - component: {fileID: 1287525927}
   m_Layer: 0
   m_Name: SceneLoader
@@ -1057,18 +1056,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f66799e0b0b37e4db86d5661f5cbdd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
---- !u!114 &1287525928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1287525926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cd9e0b205299a9459d9ffdebac0a0f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
 --- !u!4 &1287525929
 Transform:
   m_ObjectHideFlags: 0
@@ -1285,19 +1272,7 @@ MonoBehaviour:
       m_Calls: []
   onClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1287525927}
-        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
-        m_MethodName: OnPlayButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1697253860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1341,7 +1316,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1697253861}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1287525927}
+        m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
+        m_MethodName: OnPlayButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1697253861
 MonoBehaviour:
   m_ObjectHideFlags: 0
