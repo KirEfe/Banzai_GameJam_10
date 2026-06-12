@@ -1,68 +1,94 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement; // Добавляем для работы с перезапуском сцен
+using UnityEngine.SceneManagement;
 
 public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private float respawnDelay = 0.5f;
+    
+    [Header("Тайминги Анимаций")]
+    [SerializeField] private float deathAnimationDuration = 1.0f;   // Сколько секунд длится анимация смерти
+    [SerializeField] private float respawnAnimationDuration = 0.8f; // Сколько секунд длится анимация появления
 
-    // Внутренняя память, которая не сотрётся при перезапуске сцены.
-    // Нужна только для того, чтобы передать координаты в следующую секунду.
     private static Vector3? _savedSpawnPosition = null;
 
     private void Start()
     {
-        playerHealth.onDeath.AddListener(OnPlayerDeath); // Подписываемся на здоровье как раньше
+        if (playerHealth != null)
+            playerHealth.onDeath.AddListener(OnPlayerDeath); // Слушаем смерть игрока
 
-        // ЕСЛИ мы только что перезапустили сцену и у нас есть сохранённая точка:
+        // Если мы только что перезагрузили сцену после смерти:
         if (_savedSpawnPosition.HasValue)
         {
-            playerHealth.transform.position = _savedSpawnPosition.Value; // Перемещаем на RespawnPoint
-            _savedSpawnPosition = null; // Очищаем память до следующей смерти
+            playerHealth.transform.position = _savedSpawnPosition.Value; // Смещаем на точку респауна
+            _savedSpawnPosition = null; 
+
+            // Запускаем корутину анимации появления
+            StartCoroutine(RespawnAnimationRoutine());
         }
     }
 
     private void OnDestroy()
     {
-        // Небольшая страховка: проверяем на null, так как при перезагрузке сцены 
-        // игрок может уничтожиться чуть раньше менеджера
         if (playerHealth != null)
         {
-            playerHealth.onDeath.RemoveListener(OnPlayerDeath); // Отписываемся
+            playerHealth.onDeath.RemoveListener(OnPlayerDeath);
         }
     }
 
     private void OnPlayerDeath()
     {
-        StartCoroutine(RespawnRoutine()); // Запускаем корутину смерти
+        StartCoroutine(DeathRoutine()); // Запускаем логику смерти
     }
 
-    private IEnumerator RespawnRoutine()
+    // --- ЛОГИКА СМЕРТИ ---
+    private IEnumerator DeathRoutine()
     {
-        // Отключаем управление пока игрок мёртв[cite: 7]
+        // 1. Сразу же отключаем управление игроком
         var controller = playerHealth.GetComponent<PlayerController>();
         if (controller != null) controller.enabled = false;
 
-        yield return new WaitForSeconds(respawnDelay); // Ждём задержку[cite: 7]
+        // 2. Включаем триггер анимации смерти
+        var animator = playerHealth.GetComponent<Animator>();
+        if (animator != null) animator.SetTrigger("Die"); // Имя триггера в Аниматоре
 
-        // Запоминаем позицию нашего RespawnPoint перед тем, как перезагрузить мир[cite: 7]
+        // 3. Ждём, пока Смертный бог красиво падает на землю
+        yield return new WaitForSeconds(deathAnimationDuration);
+
+        // 4. Запоминаем точку респауна перед перезапуском
         if (respawnPoint != null)
         {
             _savedSpawnPosition = respawnPoint.position;
         }
 
-        // ПЕРЕЗАПУСК СЦЕНЫ
+        // 5. Перезапускаем сцену
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         if (currentSceneIndex == -1)
         {
-            // Если запускаешь из папки, а не из билда
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else
         {
             SceneManager.LoadScene(currentSceneIndex);
         }
+    }
+
+    // --- ЛОГИКА ПОЯВЛЕНИЯ (РЕСПАУНА) ---
+    private IEnumerator RespawnAnimationRoutine()
+    {
+        // 1. Сразу блокируем управление на новой сцене, чтобы игрок не бегал во время анимации появления
+        var controller = playerHealth.GetComponent<PlayerController>();
+        if (controller != null) controller.enabled = false;
+
+        // 2. Включаем триггер анимации появления (например, восстает из праха или падает с неба)
+        var animator = playerHealth.GetComponent<Animator>();
+        if (animator != null) animator.SetTrigger("Respawn"); // Имя триггера в Аниматоре
+
+        // 3. Ждём заданное время, пока анимация проигрывается
+        yield return new WaitForSeconds(respawnAnimationDuration);
+
+        // 4. Возвращаем игроку управление! Наш Animator сам перейдет в Idle, если так настроено транзишном
+        if (controller != null) controller.enabled = true;
     }
 }

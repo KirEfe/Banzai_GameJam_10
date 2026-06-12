@@ -238,12 +238,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2783219159994073595, guid: ed7e6396e47db4b4bb5902dfa96ccd62, type: 3}
+      propertyPath: maxHealth
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -2783219159994073595, guid: ed7e6396e47db4b4bb5902dfa96ccd62, type: 3}
       propertyPath: attackRange
-      value: 1.04
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -2783219159994073595, guid: ed7e6396e47db4b4bb5902dfa96ccd62, type: 3}
       propertyPath: patrolDistance
-      value: 5.59
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: -2783219159994073595, guid: ed7e6396e47db4b4bb5902dfa96ccd62, type: 3}
       propertyPath: onStopMoving.m_PersistentCalls.m_Calls.Array.size
@@ -1803,7 +1807,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RespawnManager
   respawnPoint: {fileID: 1588009091}
   playerHealth: {fileID: 1141492906}
-  respawnDelay: 0.5
+  deathAnimationDuration: 0.5
+  respawnAnimationDuration: 1
 --- !u!4 &1058299493
 Transform:
   m_ObjectHideFlags: 0
@@ -2094,6 +2099,10 @@ PrefabInstance:
     - target: {fileID: 2828289148172716013, guid: e5c5dec6311d34a4298183db8863cf98, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5166526901321582051, guid: e5c5dec6311d34a4298183db8863cf98, type: 3}
+      propertyPath: damage
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2886,6 +2895,10 @@ PrefabInstance:
     - target: {fileID: 1636206423032984115, guid: a986153b4f03c6c448a2877e6333e031, type: 3}
       propertyPath: m_Name
       value: Spikes
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010317713967017003, guid: a986153b4f03c6c448a2877e6333e031, type: 3}
+      propertyPath: damage
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6523579280879509667, guid: a986153b4f03c6c448a2877e6333e031, type: 3}
       propertyPath: m_LocalPosition.x

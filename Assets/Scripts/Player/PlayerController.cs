@@ -59,9 +59,13 @@ public class PlayerController : MonoBehaviour
     {
         _moveInput = _input.Player.Move.ReadValue<Vector2>();
         CheckGround();
-        HandleMovement();
         HandleCoyoteTime();
         _attackCooldownCounter -= Time.deltaTime;
+    }
+
+    private void FixedUpdate()
+    {
+        HandleMovement(); // Теперь бег работает одинаково на любых мониторах![cite: 8]
     }
 
     private void CheckGround()
