@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events; // ОБЯЗАТЕЛЬНО: добавляем для работы с ивентами
 
 public class CrumblingPlatform : MonoBehaviour
 {
@@ -7,9 +8,14 @@ public class CrumblingPlatform : MonoBehaviour
     [SerializeField] private float crumbleDelay = 0.8f;  // время до разрушения
     [SerializeField] private float respawnDelay = 3f;    // время до появления обратно
 
+    [Header("События для художника")]
+    public UnityEvent onCrumbleStart; // Срабатывает в момент наступления на платформу
+    public UnityEvent onRespawn;      // Срабатывает, когда платформа восстанавливается
+
     private Vector3 _startPosition;
     private Collider2D _collider;
     private SpriteRenderer _renderer;
+    private Animator _animator;       // Ссылка на компонент аниматора
     private bool _isCrumbling;
 
     private void Awake()
@@ -17,6 +23,7 @@ public class CrumblingPlatform : MonoBehaviour
         _startPosition = transform.position;
         _collider = GetComponent<Collider2D>();
         _renderer = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>(); // Кешируем аниматор
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -28,6 +35,13 @@ public class CrumblingPlatform : MonoBehaviour
     private IEnumerator CrumbleRoutine()
     {
         _isCrumbling = true;
+
+        // Включаем анимацию разрушения и дёргаем ивент (для звуков/эффектов)
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Crumble"); // Запускаем триггер разрушения
+        }
+        onCrumbleStart?.Invoke();
 
         // Тряска
         yield return StartCoroutine(ShakeRoutine());
@@ -42,6 +56,14 @@ public class CrumblingPlatform : MonoBehaviour
         transform.position = _startPosition;
         _collider.enabled = true;
         _renderer.enabled = true;
+
+        // Возвращаем аниматор в дефолтное состояние (Idle)
+        if (_animator != null)
+        {
+            _animator.SetTrigger("Reset"); // Возвращаем платформу в целое состояние
+        }
+        onRespawn?.Invoke();
+
         _isCrumbling = false;
     }
 
@@ -52,8 +74,8 @@ public class CrumblingPlatform : MonoBehaviour
 
         while (elapsed < shakeDelay)
         {
-            float offsetX = Random.Range(-shakeMagnitude, shakeMagnitude);
-            transform.position = _startPosition + new Vector3(offsetX, 0f, 0f);
+            float offsetY = Random.Range(-shakeMagnitude, shakeMagnitude);
+            transform.position = _startPosition + new Vector3(0f, offsetY, 0f);
             elapsed += Time.deltaTime;
             yield return null;
         }

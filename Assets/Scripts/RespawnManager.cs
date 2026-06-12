@@ -5,7 +5,7 @@ public class RespawnManager : MonoBehaviour
 {
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private PlayerHealth playerHealth;
-    [SerializeField] private float respawnDelay = 1.5f;
+    [SerializeField] private float respawnDelay = 0.5f;
 
     private void Start()
     {
