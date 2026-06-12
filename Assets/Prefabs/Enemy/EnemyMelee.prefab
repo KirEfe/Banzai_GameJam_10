@@ -349,11 +349,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c6d495320841584184eb2d7cb9f66d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
-  maxHealth: 3
+  maxHealth: 2
   damageToPlayer: 1
-  deathAnimationDuration: 1
+  deathAnimationDuration: 0.5
   invincibilityDuration: 0.1
-  hitStunDuration: 0.4
+  hitStunDuration: 0.5
   onDamagedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -415,7 +415,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   moveSpeed: 2
-  patrolDistance: 5.59
+  patrolDistance: 6
   attackRange: 1.04
   attackCooldown: 1
   afterAttackDelay: 0.5
