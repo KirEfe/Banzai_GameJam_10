@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8030894175192142867}
-  m_Layer: 10
-  m_Name: AttackPoint
+  m_Layer: 9
+  m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 3292292324789176595}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.16, y: 0, z: 0}
+  m_LocalPosition: {x: 1.78, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41,13 +41,13 @@ GameObject:
   m_Component:
   - component: {fileID: 5832493430643889590}
   - component: {fileID: 8105562859387402468}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5832493430643889590
 Transform:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5113633586754183941}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 7144087394271999445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.4, z: 0}
+  m_LocalPosition: {x: 0, y: -3.06, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -164,13 +164,12 @@ GameObject:
   - component: {fileID: 1040776041936183959}
   - component: {fileID: 4455744073498929203}
   - component: {fileID: 1451748332088569379}
-  - component: {fileID: 575704100205480488}
   - component: {fileID: 994230332027995668}
   - component: {fileID: 5196290308481767200}
-  - component: {fileID: -5062087252099867010}
-  m_Layer: 10
-  m_Name: Player
-  m_TagString: Player
+  - component: {fileID: -2783219159994073595}
+  m_Layer: 9
+  m_Name: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -230,7 +229,7 @@ Animator:
   m_GameObject: {fileID: 8646524197414987511}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b66ff73b8504e5142a117d99aed3441b, type: 2}
+  m_Controller: {fileID: 9100000, guid: ad58544455b045847b38e4487b8db9a0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -242,33 +241,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &575704100205480488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8646524197414987511}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dba249d80a4b60f45b679d3b55f2a1b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  moveSpeed: 6
-  jumpForce: 17
-  coyoteTime: 0.15
-  groundCheck: {fileID: 5113633586754183941}
-  groundCheckRadius: 0.1
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  attackPoint: {fileID: 8030894175192142867}
-  attackRadius: 0.5
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  attackDamage: 1
-  attackCooldown: 0.4
 --- !u!70 &994230332027995668
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -303,8 +275,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.059151173}
-  m_Size: {x: 1, y: 2.6183023}
+  m_Offset: {x: -0.10518694, y: 0.04674983}
+  m_Size: {x: 2.5, y: 6.25}
   m_Direction: 0
 --- !u!212 &5196290308481767200
 SpriteRenderer:
@@ -356,16 +328,16 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 1702429108, guid: cc5243191b6ed8245bbadeb27a6df114, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.0141509175, b: 0.0141509175, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 3.2, y: 3.2}
+  m_Size: {x: 2.8199997, y: 6.47}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!114 &-5062087252099867010
+--- !u!114 &-2783219159994073595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -374,14 +346,97 @@ MonoBehaviour:
   m_GameObject: {fileID: 8646524197414987511}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 401d797d5302ba647999b422e5dd5e1c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c6d495320841584184eb2d7cb9f66d5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
+  m_EditorClassIdentifier: Assembly-CSharp::MeleeEnemy
   maxHealth: 3
-  invincibilityDuration: 1.5
-  onDamaged:
+  damageToPlayer: 1
+  deathAnimationDuration: 1
+  onDamagedEvent:
     m_PersistentCalls:
-      m_Calls: []
-  onDeath:
+      m_Calls:
+      - m_Target: {fileID: 1451748332088569379}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Hit
+          m_BoolArgument: 0
+        m_CallState: 2
+  onDeathEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1451748332088569379}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Death
+          m_BoolArgument: 0
+        m_CallState: 2
+  onStartMoving:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1451748332088569379}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: StartWalk
+          m_BoolArgument: 0
+        m_CallState: 2
+  onStopMoving:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1451748332088569379}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: StopWalk
+          m_BoolArgument: 0
+        m_CallState: 2
+  moveSpeed: 2
+  patrolDistance: 8.61
+  attackRange: 2.79
+  attackCooldown: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  groundCheck: {fileID: 5113633586754183941}
+  wallCheck: {fileID: 8030894175192142867}
+  checkRadius: 0.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  onAttack:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1451748332088569379}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Attack
+          m_BoolArgument: 0
+        m_CallState: 2
