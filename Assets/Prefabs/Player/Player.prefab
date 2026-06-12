@@ -168,6 +168,9 @@ GameObject:
   - component: {fileID: 994230332027995668}
   - component: {fileID: 5196290308481767200}
   - component: {fileID: -5062087252099867010}
+  - component: {fileID: 7744547311618325393}
+  - component: {fileID: 7910730845689409601}
+  - component: {fileID: 489582538162270594}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -216,7 +219,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -255,8 +258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   moveSpeed: 6
-  jumpForce: 17
+  jumpForce: 16
   coyoteTime: 0.15
+  attackDashForce: 25
+  attackDashDuration: 0.1
+  attackDashDelay: 0.05
   groundCheck: {fileID: 5113633586754183941}
   groundCheckRadius: 0.1
   groundLayer:
@@ -269,6 +275,8 @@ MonoBehaviour:
     m_Bits: 512
   attackDamage: 1
   attackCooldown: 0.4
+  playerSounds: {fileID: 7910730845689409601}
+  doubleJumpForce: 14
 --- !u!70 &994230332027995668
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -384,4 +392,173 @@ MonoBehaviour:
       m_Calls: []
   onDeath:
     m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 489582538162270594}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 824e9fe65ceb3744fba06a84ba4d4bf9, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7744547311618325393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646524197414987511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20532ba6e3318d541bee7f8245189868, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAbilities
+  onWingsUnlocked:
+    m_PersistentCalls:
       m_Calls: []
+  onEyeUnlocked:
+    m_PersistentCalls:
+      m_Calls: []
+  onScepterUnlocked:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7910730845689409601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646524197414987511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f66d4273bff3ea54faa0b91afaec482e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSounds
+  audioSource: {fileID: 489582538162270594}
+  footstepClips:
+  - {fileID: 8300000, guid: 4da5f5cb72e5e674b9ee19ae2c6eef07, type: 3}
+  - {fileID: 8300000, guid: b73c74187554f9046aed8687eecc3249, type: 3}
+  jumpClips:
+  - {fileID: 8300000, guid: d0c0f636ac827a748a8756371ab39e59, type: 3}
+  landClips:
+  - {fileID: 8300000, guid: 066d2fcb02658014480fc0e27532bfd0, type: 3}
+  attackClips:
+  - {fileID: 8300000, guid: abf1c17af0856d8479554f6613e4b0d5, type: 3}
+  hurtClips:
+  - {fileID: 8300000, guid: f49143fe0c64d5640878e4eb13291484, type: 3}
+  onFootstepFX:
+    m_PersistentCalls:
+      m_Calls: []
+  onJumpFX:
+    m_PersistentCalls:
+      m_Calls: []
+  onLandFX:
+    m_PersistentCalls:
+      m_Calls: []
+  onAttackFX:
+    m_PersistentCalls:
+      m_Calls: []
+  onHurtFX:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!82 &489582538162270594
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646524197414987511}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

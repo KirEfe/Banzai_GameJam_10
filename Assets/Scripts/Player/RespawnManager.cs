@@ -47,11 +47,25 @@ public class RespawnManager : MonoBehaviour
     {
         // 1. Сразу же отключаем управление игроком
         var controller = playerHealth.GetComponent<PlayerController>();
-        if (controller != null) controller.enabled = false;
+        if (controller != null)
+        {
+            controller.StopAllMovement(); // сначала стоп
+            controller.enabled = false;  // потом отключаем
+        }
 
         // 2. Включаем триггер анимации смерти
         var animator = playerHealth.GetComponent<Animator>();
-        if (animator != null) animator.SetTrigger("Die"); // Имя триггера в Аниматоре
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");
+            // Ждём один кадр чтобы триггер успел сработать
+            yield return null;
+            // Отключаем все параметры которые могут перебить анимацию
+            animator.SetBool("IsGrounded", false);
+            animator.SetFloat("Speed", 0f);
+            animator.ResetTrigger("Jump");
+            animator.ResetTrigger("Hurt");
+        }
 
         // 3. Ждём, пока Смертный бог красиво падает на землю
         yield return new WaitForSeconds(deathAnimationDuration);

@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 3646006158603183653}
   - component: {fileID: 297147017379236574}
   - component: {fileID: 3147054066458362721}
+  - component: {fileID: 2586633275744300144}
   m_Layer: 9
   m_Name: EnemyRanged
   m_TagString: Untagged
@@ -288,14 +289,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb1bce60202bc044282a8c6d40ed671e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RangedEnemy
-  maxHealth: 3
+  maxHealth: 1
   damageToPlayer: 1
   deathAnimationDuration: 1
   invincibilityDuration: 0.1
   hitStunDuration: 0.4
   onDamagedEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2586633275744300144}
+        m_TargetAssemblyTypeName: HitEffectJuice, Assembly-CSharp
+        m_MethodName: PlayHitJuice
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -306,9 +319,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   moveSpeed: 1.5
-  patrolDistance: 6.82
-  attackRange: 5
+  patrolDistance: 6
+  attackRange: 9
   attackCooldown: 2
+  shootDelay: 0.3
   projectilePrefab: {fileID: 3144744823423612374, guid: aba91a4cb0d1ae94694a4a630be14268, type: 3}
   firePoint: {fileID: 2944654366435506524}
   playerLayer:
@@ -323,6 +337,22 @@ MonoBehaviour:
   onAttack:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2586633275744300144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036475710817220921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89ba06b0fdc9754cb5ecbd97f87ce21, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HitEffectJuice
+  enemySprite: {fileID: 1140738422019752966}
+  flashColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  flashDuration: 0.1
+  hitStopDuration: 0.05
 --- !u!1 &4449714678216474076
 GameObject:
   m_ObjectHideFlags: 0
@@ -410,7 +440,7 @@ Transform:
   m_GameObject: {fileID: 7180765128235334663}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.049, y: -1.345, z: 0}
+  m_LocalPosition: {x: 0.049, y: -1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -16,6 +16,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private int _currentHealth;
     private float _invincibilityTimer;
     private bool _isDead;
+    private PlayerController _controller;
 
     public int CurrentHealth => _currentHealth;
     public int MaxHealth => maxHealth;
@@ -23,6 +24,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void Awake()
     {
         _currentHealth = maxHealth;
+        _controller = GetComponent<PlayerController>();
 
         if (HUDManager.Instance != null)
     {
@@ -57,6 +59,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     {
         _isDead = true;
         onDeath?.Invoke();
+        _controller?.StopAllMovement();
     }
 
     // Вызывается при респауне
