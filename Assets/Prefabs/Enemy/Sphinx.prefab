@@ -139,13 +139,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Sphinx
   maxHealth: 3
   damageToPlayer: 1
+  deathAnimationDuration: 1
+  invincibilityDuration: 0.5
+  hitStunDuration: 0.4
   onDamagedEvent:
     m_PersistentCalls:
       m_Calls: []
   onDeathEvent:
     m_PersistentCalls:
       m_Calls: []
-  projectilePrefab: {fileID: 7886753151560317283, guid: 9c66e1cf99122c149a7fc923098c5a32, type: 3}
+  onStartMoving:
+    m_PersistentCalls:
+      m_Calls: []
+  onStopMoving:
+    m_PersistentCalls:
+      m_Calls: []
+  projectilePrefab: {fileID: 7886753151560317283, guid: 4b694660720c2a04f9182be871c0a2df, type: 3}
   shootPoint: {fileID: 3186914943910098742}
   shootInterval: 2
   projectileSpeed: 5
