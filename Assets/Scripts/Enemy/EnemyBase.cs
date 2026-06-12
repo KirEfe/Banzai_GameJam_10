@@ -13,6 +13,10 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
     [Header("Смерть")]
     [SerializeField] private float deathAnimationDuration = 1f;
 
+    [Header("После получения удара")]
+    [SerializeField] private float invincibilityDuration = 0.5f;
+    [SerializeField] private float hitStunDuration = 0.4f;
+
     [Header("События для художника")]
     public UnityEvent onDamagedEvent;
     public UnityEvent onDeathEvent;
@@ -21,34 +25,65 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
 
     protected int CurrentHealth;
     protected bool IsDead;
+    protected bool IsStunned;
+    protected Animator Animator;
     private bool _isMoving;
+    private float _invincibilityTimer;
 
     protected virtual void Awake()
     {
         CurrentHealth = maxHealth;
+        Animator = GetComponent<Animator>();
     }
 
-    // Вызывай в наследнике когда враг начал двигаться
     protected void SetMoving(bool moving)
     {
-        if (_isMoving == moving) return; // состояние не изменилось — не спамим событие
-
+        if (_isMoving == moving) return;
         _isMoving = moving;
-        if (_isMoving)
-            onStartMoving?.Invoke();  // художник вешает Play("Walk")
+
+        if (Animator != null)
+            Animator.SetBool("IsWalking", moving);
+
+        if (moving)
+            onStartMoving?.Invoke();
         else
-            onStopMoving?.Invoke();   // художник вешает Play("Idle")
+            onStopMoving?.Invoke();
+    }
+
+    protected void ResetMovingState()
+    {
+        _isMoving = false;
+        if (Animator != null)
+            Animator.SetBool("IsWalking", false);
+    }
+
+    protected virtual void Update()
+    {
+        if (_invincibilityTimer > 0f)
+            _invincibilityTimer -= Time.deltaTime;
     }
 
     public virtual void TakeDamage(int damage)
     {
         if (IsDead) return;
+        if (_invincibilityTimer > 0f) return;
 
         CurrentHealth -= damage;
+        _invincibilityTimer = invincibilityDuration;
+
         OnDamaged();
 
         if (CurrentHealth <= 0)
             Die();
+        else
+            StartCoroutine(HitStunRoutine());
+    }
+
+    private IEnumerator HitStunRoutine()
+    {
+        IsStunned = true;
+        yield return new WaitForSeconds(hitStunDuration);
+        IsStunned = false;
     }
 
     protected virtual void OnDamaged()
@@ -61,14 +96,13 @@ public abstract class EnemyBase : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        // Отключаем физику и коллайдер сразу
         var rb = GetComponent<Rigidbody2D>();
         if (rb != null) rb.simulated = false;
 
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        onDeathEvent?.Invoke(); // художник вешает Play("Death")
+        onDeathEvent?.Invoke();
         StartCoroutine(DeathRoutine());
     }
 

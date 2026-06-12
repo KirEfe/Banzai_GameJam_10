@@ -10,6 +10,8 @@ public class MeleeEnemy : EnemyBase
     [Header("Атака")]
     [SerializeField] private float attackRange = 0.8f;
     [SerializeField] private float attackCooldown = 1f;
+    [SerializeField] private float afterAttackDelay = 0.5f; // пауза после удара
+
     [SerializeField] private LayerMask playerLayer;
 
     [Header("Проверка земли и стен")]
@@ -24,8 +26,9 @@ public class MeleeEnemy : EnemyBase
     private Vector3 _startPosition;
     private bool _movingRight = true;
     private float _attackCooldownCounter;
+    private float _afterAttackTimer;
 
-    private enum State { Patrolling, Attacking }
+    private enum State { Patrolling, Attacking, AfterAttack }
     private State _currentState;
 
     protected override void Awake()
@@ -33,14 +36,31 @@ public class MeleeEnemy : EnemyBase
         base.Awake();
         _startPosition = transform.position;
         _currentState = State.Patrolling;
-        SetMoving(true); // принудительно запускаем анимацию ходьбы при старте
+        SetMoving(true);
     }
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
+
         if (IsDead) return;
 
+        // Стан после получения удара — стоим на месте
+        if (IsStunned)
+        {
+            SetMoving(false);
+            return;
+        }
+
         _attackCooldownCounter -= Time.deltaTime;
+        _afterAttackTimer -= Time.deltaTime;
+
+        // Пауза после атаки — стоим на месте
+        if (_afterAttackTimer > 0f)
+        {
+            SetMoving(false);
+            return;
+        }
 
         bool playerInRange = CheckPlayerInRange();
 
@@ -58,8 +78,11 @@ public class MeleeEnemy : EnemyBase
             if (_currentState != State.Patrolling)
             {
                 _currentState = State.Patrolling;
-                SetMoving(true);
+                ResetMovingState();
+                // SetMoving(true);
             }
+
+            SetMoving(true);
             Patrol();
         }
     }
@@ -85,20 +108,34 @@ public class MeleeEnemy : EnemyBase
         );
     }
 
-    private bool CheckPlayerInRange()
+        private bool CheckPlayerInRange()
     {
-        return Physics2D.OverlapCircle(transform.position, attackRange, playerLayer) != null;
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, attackRange, playerLayer);
+        if (hit == null) return false;
+
+        // Проверяем что игрок спереди
+        float directionToPlayer = hit.transform.position.x - transform.position.x;
+        bool playerInFront = _movingRight ? directionToPlayer > 0 : directionToPlayer < 0;
+
+        return playerInFront;
     }
 
-    private void TryAttack()
+        private void TryAttack()
     {
         if (_attackCooldownCounter > 0f) return;
 
+        Collider2D hit = Physics2D.OverlapCircle(transform.position, attackRange, playerLayer);
+        if (hit == null) return;
+
+        float directionToPlayer = hit.transform.position.x - transform.position.x;
+        bool playerInFront = _movingRight ? directionToPlayer > 0 : directionToPlayer < 0;
+        if (!playerInFront) return;
+
         _attackCooldownCounter = attackCooldown;
+        _afterAttackTimer = afterAttackDelay;
         onAttack?.Invoke();
 
-        Collider2D hit = Physics2D.OverlapCircle(transform.position, attackRange, playerLayer);
-        hit?.GetComponent<PlayerHealth>()?.TakeDamage(damageToPlayer);
+        hit.GetComponent<PlayerHealth>()?.TakeDamage(damageToPlayer);
     }
 
     private void OnDrawGizmosSelected()
@@ -120,7 +157,7 @@ public class MeleeEnemy : EnemyBase
         if (wallCheck != null)
         {
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(wallCheck.position, checkRadius);
+            Gizmos.DrawWireSphere(wallCheck.position, checkRadius); ///
         }
     }
 }
