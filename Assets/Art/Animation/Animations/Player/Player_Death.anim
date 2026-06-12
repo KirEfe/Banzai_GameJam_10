@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: IdlePlatform
+  m_Name: Player_Death
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,7 +21,7 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -6464486, guid: e0f092da9ce143f4e9f232e615f3dbc7, type: 3}
+      value: {fileID: -2059869864, guid: 61e6e3d7977de1c46a749d2cda22475e, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -44,7 +44,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -6464486, guid: e0f092da9ce143f4e9f232e615f3dbc7, type: 3}
+    - {fileID: -2059869864, guid: 61e6e3d7977de1c46a749d2cda22475e, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

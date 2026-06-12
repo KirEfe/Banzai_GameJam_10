@@ -23,6 +23,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private void Awake()
     {
         _currentHealth = maxHealth;
+
+        if (HUDManager.Instance != null)
+    {
+        HUDManager.Instance.UpdateHealthUI(CurrentHealth);
+    }
     }
 
     private void Update()
@@ -38,6 +43,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         _currentHealth -= damage;
         _invincibilityTimer = invincibilityDuration;
         onDamaged?.Invoke();
+
+        if (HUDManager.Instance != null)
+    {
+        HUDManager.Instance.UpdateHealthUI(CurrentHealth);
+    }
 
         if (_currentHealth <= 0)
             Die();
