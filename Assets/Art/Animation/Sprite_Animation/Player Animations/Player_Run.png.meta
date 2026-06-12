@@ -139,10 +139,10 @@ TextureImporter:
       name: Player_Run_0
       rect:
         serializedVersion: 2
-        x: 181
-        y: 59
-        width: 368
-        height: 628
+        x: 0
+        y: 0
+        width: 320
+        height: 320
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -161,10 +161,10 @@ TextureImporter:
       name: Player_Run_1
       rect:
         serializedVersion: 2
-        x: 258
-        y: 57
-        width: 4
-        height: 6
+        x: 320
+        y: 0
+        width: 320
+        height: 320
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -183,10 +183,10 @@ TextureImporter:
       name: Player_Run_2
       rect:
         serializedVersion: 2
-        x: 436
-        y: 55
-        width: 16
-        height: 10
+        x: 640
+        y: 0
+        width: 320
+        height: 320
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -205,10 +205,10 @@ TextureImporter:
       name: Player_Run_3
       rect:
         serializedVersion: 2
-        x: 982
-        y: 55
-        width: 272
-        height: 635
+        x: 960
+        y: 0
+        width: 320
+        height: 320
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,72 +219,6 @@ TextureImporter:
       bones: []
       spriteID: 52417f91449883a4bb79cb6754979989
       internalID: -1614090921
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Run_4
-      rect:
-        serializedVersion: 2
-        x: 1758
-        y: 50
-        width: 309
-        height: 645
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a4cbcf4d14a13714cb743786880bcb75
-      internalID: 235735
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Run_5
-      rect:
-        serializedVersion: 2
-        x: 2518
-        y: 46
-        width: 269
-        height: 644
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ad285d61d6e6b3b46b2f4df911b330e3
-      internalID: 1085414416
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Player_Run_6
-      rect:
-        serializedVersion: 2
-        x: 1233
-        y: 42
-        width: 10
-        height: 11
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fca7fd4ac703c6741b9206dac408ed4f
-      internalID: 1588166678
       vertices: []
       indices: 
       edges: []
@@ -303,15 +237,14 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":64.0,"y":64.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":0,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":320.0,"y":320.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
+      - key: SpriteEditor.SliceOnImport
+        value: False
     nameFileIdTable:
       Player_Run_0: -1388892398
       Player_Run_1: -632572066
       Player_Run_2: -799032073
       Player_Run_3: -1614090921
-      Player_Run_4: 235735
-      Player_Run_5: 1085414416
-      Player_Run_6: 1588166678
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
