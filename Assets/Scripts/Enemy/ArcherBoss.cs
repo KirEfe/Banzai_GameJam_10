@@ -13,9 +13,13 @@ public class ArcherBoss : EnemyBase
     [SerializeField] private int shotsPerBurst = 3;
     [SerializeField] private float timeBetweenShots = 0.3f;
     [SerializeField] private float timeBetweenBursts = 2f;
-    [SerializeField] private float phase2BurstDelay = 1.5f;
-    [SerializeField] private float phase3BurstDelay = 1f;
-    // [SerializeField] private float projectileSpeed = 8f;
+    [SerializeField] private float projectileSpeed = 8f; // добавь это поле
+
+    [Header("Снаряды по фазам")]
+    [SerializeField] private GameObject[] phase1Projectiles; // платформа 0
+    [SerializeField] private GameObject[] phase2Projectiles; // платформа 1
+    [SerializeField] private GameObject[] phase3Projectiles; // платформа 2+
+    
 
     [Header("Прыжок")]
     [SerializeField] private int hitsBeforeJump = 3;
@@ -133,6 +137,12 @@ public class ArcherBoss : EnemyBase
         }
 
         transform.position = endPos;
+
+        
+        _currentPlatformIndex = targetIndex;
+        _projectileIndex = 0; // сброс индекса при смене фазы
+
+
         _currentPlatformCenter = endPos; // новый центр патруля
         _currentPlatformIndex = targetIndex;
 
@@ -155,9 +165,7 @@ public class ArcherBoss : EnemyBase
         while (!IsDead)
         {
             // Патрулируем пока ждём следующей очереди
-            float delay = _currentPlatformIndex == 0 ? timeBetweenBursts :
-                        _currentPlatformIndex == 1 ? phase2BurstDelay :
-                        phase3BurstDelay;
+            float delay = timeBetweenBursts;
 
             float patrolTimer = 0f;
             SetMoving(true);
@@ -220,25 +228,43 @@ public class ArcherBoss : EnemyBase
     }
 
     private void Shoot()
-{
-    if (firePoint == null || _player == null) return;
-    if (projectilePrefabs == null || projectilePrefabs.Length == 0) return;
-
-    GameObject prefab = projectilePrefabs[_projectileIndex % projectilePrefabs.Length];
-    _projectileIndex++;
-
-    if (prefab == null) return;
-
-    GameObject proj = Instantiate(prefab, firePoint.position, Quaternion.identity);
-
-    // Используем Setup вместо прямого задания скорости
-    EnemyProjectile projectile = proj.GetComponent<EnemyProjectile>();
-    if (projectile != null)
     {
-        float direction = _player.position.x > firePoint.position.x ? 1f : -1f;
-        projectile.Setup(direction, damageToPlayer);
+        if (firePoint == null || _player == null) return;
+
+        // Выбираем массив снарядов по текущей фазе
+        GameObject[] currentProjectiles = _currentPlatformIndex == 0 ? phase1Projectiles :
+                                        _currentPlatformIndex == 1 ? phase2Projectiles :
+                                        phase3Projectiles;
+
+        if (currentProjectiles == null || currentProjectiles.Length == 0) return;
+
+        // Берём снаряд по порядку из текущего массива
+        GameObject prefab = currentProjectiles[_projectileIndex % currentProjectiles.Length];
+        _projectileIndex++;
+
+        if (prefab == null) return;
+
+        Vector2 direction = (_player.position - firePoint.position).normalized;
+        GameObject proj = Instantiate(prefab, firePoint.position, Quaternion.identity);
+
+        EnemyProjectile projectile = proj.GetComponent<EnemyProjectile>();
+        if (projectile != null)
+        {
+            float shootDirection = direction.x > 0 ? 1f : -1f;
+            projectile.Setup(shootDirection, damageToPlayer);
+            return;
+        }
+
+        // Если снаряд без EnemyProjectile — задаём скорость напрямую
+        Rigidbody2D rb = proj.GetComponent<Rigidbody2D>();
+        if (rb != null)
+            rb.linearVelocity = direction * projectileSpeed;
+
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        proj.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        Destroy(proj, 5f);
     }
-}
 
     private void FacePlayer()
     {
