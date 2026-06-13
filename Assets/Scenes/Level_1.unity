@@ -8527,6 +8527,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5062087252099867010, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: onDeath.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: 4bf9818529081b347b78af4195d16438, type: 3}
     - target: {fileID: 994230332027995668, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
       propertyPath: m_Size.y
       value: 2.5291393
@@ -8579,6 +8583,38 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -1.362
       objectReference: {fileID: 0}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: landClips.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: attackClips.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'landClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d169330b50c3d7a45909f08939fc1956, type: 3}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'landClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: eef91dda72ebc1041825649bc577c9fb, type: 3}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'landClips.Array.data[2]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f9bffacb870ee6a4f86e466a865f920b, type: 3}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'landClips.Array.data[3]'
+      value: 
+      objectReference: {fileID: 8300000, guid: f9bffacb870ee6a4f86e466a865f920b, type: 3}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'attackClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: a2e3bc15815829c478ab29ad29f426d1, type: 3}
+    - target: {fileID: 7910730845689409601, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
+      propertyPath: 'attackClips.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: fef1b4c401cae774b979f6dba7de12dc, type: 3}
     - target: {fileID: 8646524197414987511, guid: 4542eab439f5bbf4a9ebc8b1b6c7bcee, type: 3}
       propertyPath: m_Name
       value: Player
