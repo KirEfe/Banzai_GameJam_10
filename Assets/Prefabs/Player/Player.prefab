@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1040776041936183959}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3634996178595868812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5091067065454991791}
+  m_Layer: 10
+  m_Name: PoundPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5091067065454991791
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3634996178595868812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.44, y: -1.44, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1040776041936183959}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5640144681518410830
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +178,7 @@ Transform:
   m_GameObject: {fileID: 7144087394271999445}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.4, z: 0}
+  m_LocalPosition: {x: 0, y: -1.362, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -194,6 +225,7 @@ Transform:
   - {fileID: 5832493430643889590}
   - {fileID: 5113633586754183941}
   - {fileID: 8030894175192142867}
+  - {fileID: 5091067065454991791}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4455744073498929203
@@ -263,6 +295,10 @@ MonoBehaviour:
   attackDashForce: 25
   attackDashDuration: 0.1
   attackDashDelay: 0.05
+  stonePrefab: {fileID: 2947877236527739663, guid: e3da8ff1c3191b54d8124f66eef8bdc0, type: 3}
+  stoneSpawnPoint: {fileID: 5091067065454991791}
+  downDashSpeed: 22
+  stoneLaunchForce: 20
   groundCheck: {fileID: 5113633586754183941}
   groundCheckRadius: 0.1
   groundLayer:
@@ -311,8 +347,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.059151173}
-  m_Size: {x: 1, y: 2.6183023}
+  m_Offset: {x: 0, y: -0.01456964}
+  m_Size: {x: 1, y: 2.5291393}
   m_Direction: 0
 --- !u!212 &5196290308481767200
 SpriteRenderer:

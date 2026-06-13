@@ -281,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd71b08b1051c914ebae765ff5839367, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SphinxProjectile_2
-  launchForceX: 4
-  launchForceY: 1
+  launchForceX: 8
+  launchForceY: 2
   lifetime: 5
   onVanishEvent:
     m_PersistentCalls:

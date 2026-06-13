@@ -15,6 +15,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float attackDashDuration = 0.1f; 
     [SerializeField] private float attackDashDelay = 0.06f;   
 
+    [Header("Способность: Удар об землю")]
+    [SerializeField] private GameObject stonePrefab;        // Префаб камня
+    [SerializeField] private Transform stoneSpawnPoint; // новая точка спавна
+    [SerializeField] private float downDashSpeed = 22f;      // Скорость падения вниз
+    [SerializeField] private float stoneLaunchForce = 20f;   // Сила, с которой меч пинает камень
+
     [Header("Проверка земли")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.1f;
@@ -30,20 +36,16 @@ public class PlayerController : MonoBehaviour
     [Header("Звуки")]
     [SerializeField] private PlayerSounds playerSounds;
 
-
     [Header("Двойной прыжок")]
     [SerializeField] private float doubleJumpForce = 10f;
 
     private Rigidbody2D _rb;
     private Animator _animator;
     private InputSystem_Actions _input;
-    private PlayerHealth _playerHealth; // Ссылка для отслеживания боли
-
+    private PlayerHealth _playerHealth; 
     private PlayerAbilities _abilities;
-    private int _jumpsRemaining;
+    
     private bool _doubleJumpUsed;
-
-
     private float _coyoteTimeCounter;
     private float _attackCooldownCounter;
     private float _dashTimer; 
@@ -52,6 +54,9 @@ public class PlayerController : MonoBehaviour
     private bool _facingRight = true;
     private Vector2 _moveInput;
 
+    private bool _isDownDashing;
+    private float _currentDashDirection; 
+
     private readonly RaycastHit2D[] _dashObstacleHits = new RaycastHit2D[1];
 
     private void Awake()
@@ -59,29 +64,19 @@ public class PlayerController : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
         _input = new InputSystem_Actions();
-        _playerHealth = GetComponent<PlayerHealth>(); // Кешируем здоровье
+        _playerHealth = GetComponent<PlayerHealth>(); 
         _abilities = GetComponent<PlayerAbilities>();
-
     }
 
     private void Start()
     {
         CheckGround(); 
-        
-        // Подписываемся на событие получения урона
-        if (_playerHealth != null)
-        {
-            _playerHealth.onDamaged.AddListener(OnHurt);
-        }
+        if (_playerHealth != null) _playerHealth.onDamaged.AddListener(OnHurt);
     }
 
     private void OnDestroy()
     {
-        // Обязательно отписываемся при уничтожении, чтобы избежать утечек памяти
-        if (_playerHealth != null)
-        {
-            _playerHealth.onDamaged.RemoveListener(OnHurt);
-        }
+        if (_playerHealth != null) _playerHealth.onDamaged.RemoveListener(OnHurt);
     }
 
     private void OnEnable()
@@ -114,8 +109,7 @@ public class PlayerController : MonoBehaviour
             if (_dashAnticipationTimer <= 0f)
             {
                 _dashTimer = attackDashDuration;
-                float attackDirection = _facingRight ? 1f : -1f;
-                _rb.linearVelocity = new Vector2(attackDirection * attackDashForce, _rb.linearVelocity.y);
+                _rb.linearVelocity = new Vector2(_currentDashDirection * attackDashForce, _rb.linearVelocity.y);
             }
         }
         else if (_dashTimer > 0f)
@@ -131,32 +125,44 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGround()
     {
-        // _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-        // _animator.SetBool("IsGrounded", _isGrounded);
         bool wasGrounded = _isGrounded;
         _isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
         _animator.SetBool("IsGrounded", _isGrounded);
+
+        // // ДОБАВЛЕНО: Передаем вертикальную скорость в аниматор (нужно для выхода из дэша в падение)
+        // _animator.SetFloat("VerticalVelocity", _rb.linearVelocity.y);
 
         if (_isGrounded && !wasGrounded)
         {
             _doubleJumpUsed = false;
             playerSounds?.PlayLand();
+            
+
+            if (_isDownDashing)
+            {
+                _isDownDashing = false;
+                SpawnPoundStone();
+            }
         }
     }
 
     private void HandleMovement()
     {
+        if (_isDownDashing)
+        {
+            _rb.linearVelocity = new Vector2(0f, -downDashSpeed);
+            return;
+        }
+
         if (_dashAnticipationTimer > 0f)
         {
             _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
             return;
         }
 
-        if (_dashTimer > 0f)
+        if (_dashTimer > 0f && _currentDashDirection != 0f)
         {
-            float dashDirection = _facingRight ? 1f : -1f;
-            Vector2 directionVec = new Vector2(dashDirection, 0f);
-
+            Vector2 directionVec = new Vector2(_currentDashDirection, 0f);
             int hitCount = _rb.Cast(directionVec, _dashObstacleHits, 0.15f);
 
             if (hitCount > 0 && ((1 << _dashObstacleHits[0].collider.gameObject.layer) & enemyLayer) != 0)
@@ -166,7 +172,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
-            _rb.linearVelocity = new Vector2(dashDirection * attackDashForce, _rb.linearVelocity.y);
+            _rb.linearVelocity = new Vector2(_currentDashDirection * attackDashForce, _rb.linearVelocity.y);
             return; 
         }
 
@@ -189,24 +195,27 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext ctx)
     {
-        // Обычный прыжок — coyote time
+        if (_isDownDashing) return;
+
         if (_coyoteTimeCounter > 0f)
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, jumpForce);
             _coyoteTimeCounter = 0f;
             _doubleJumpUsed = false;
             _animator.SetTrigger("Jump");
-            playerSounds?.PlayJump(); // звук обычного прыжка
+            playerSounds?.PlayJump(); 
             return;
         }
 
-        // Двойной прыжок — только если есть крылья и ещё не использован
+        // Двойной прыжок (Крылья сокола)
         if (_abilities != null && _abilities.HasWings && !_doubleJumpUsed)
         {
             _rb.linearVelocity = new Vector2(_rb.linearVelocity.x, doubleJumpForce);
             _doubleJumpUsed = true;
-            _animator.SetTrigger("DoubleJump"); // триггер для аниматора
-            playerSounds?.PlayJump(); // звук обычного прыжка
+            
+            _animator.SetTrigger("DoubleJump");
+            
+            playerSounds?.PlayJump(); 
             return;
         }
     }
@@ -219,47 +228,114 @@ public class PlayerController : MonoBehaviour
 
     private void OnAttack(InputAction.CallbackContext ctx)
     {
-        if (_attackCooldownCounter > 0f || _dashTimer > 0f || _dashAnticipationTimer > 0f) return;
+        if (_attackCooldownCounter > 0f || _dashTimer > 0f || _dashAnticipationTimer > 0f || _isDownDashing) return;
 
         _attackCooldownCounter = attackCooldown;
-        _animator.SetTrigger("Attack");
         playerSounds?.PlayAttack();
-        _dashAnticipationTimer = attackDashDelay; 
+
+        // А. УДАР ВНИЗ
+        if (!_isGrounded && _moveInput.y < -0.5f)
+        {
+            _isDownDashing = true;
+            _animator.SetTrigger("AttackDown");
+            _rb.linearVelocity = new Vector2(0f, -downDashSpeed);
+            return;
+        }
+
+        // Б. УДАР ВВЕРХ
+        if (_moveInput.y > 0.5f)
+        {
+            _animator.SetTrigger("AttackUp");
+            _rb.linearVelocity = new Vector2(0f, jumpForce * 0.8f);
+
+            Collider2D[] hitsUp = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
+            foreach (var hit in hitsUp)
+            {
+                if (((1 << hit.gameObject.layer) & enemyLayer) != 0)
+                    hit.GetComponent<IDamageable>()?.TakeDamage(attackDamage);
+            }
+            return; // ← этот return был, но убедимся что он есть
+        }
+
+        // В. ГОРИЗОНТАЛЬНЫЙ ДЭШ
+        if (Mathf.Abs(_moveInput.x) > 0.1f)
+        {
+            _currentDashDirection = _moveInput.x > 0f ? 1f : -1f;
+
+            if (_currentDashDirection > 0f && !_facingRight) DirectFlip();
+            else if (_currentDashDirection < 0f && _facingRight) DirectFlip();
+
+            _dashAnticipationTimer = attackDashDelay;
+            _animator.SetTrigger("Attack");
+            return; // ← не было return! код падал в Г
+        }
+
+        // Г. ОБЫЧНЫЙ УДАР (только если нет направления)
+        _currentDashDirection = 0f;
+        _animator.SetTrigger("Attack");
         _rb.linearVelocity = new Vector2(0f, _rb.linearVelocity.y);
 
-        Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, enemyLayer);
+        Collider2D[] hits = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius);
         foreach (var hit in hits)
-            hit.GetComponent<IDamageable>()?.TakeDamage(attackDamage);
-    }
+        {
+            if (((1 << hit.gameObject.layer) & enemyLayer) != 0)
+                hit.GetComponent<IDamageable>()?.TakeDamage(attackDamage);
 
-    // ЛОГИКА ПОЛУЧЕНИЯ УРОНА ИГРОКОМ
+            PoundStone stone = hit.GetComponent<PoundStone>();
+            if (stone != null)
+            {
+                Vector2 launchDir = _facingRight ? Vector2.right : Vector2.left;
+                stone.Launch(launchDir, stoneLaunchForce);
+            }
+        }
+    }
     private void OnHurt()
     {
-        // 1. Активируем триггер боли в Аниматоре
         _animator.SetTrigger("Hurt");
         playerSounds?.PlayHurt();
-
-        // 2. СБРОС СОСТОЯНИЙ: если бога ударили в момент замаха или рывка — прерываем атаку,
-        // чтобы враги могли "перебить" наше действие. Это делает боевку честной и тактичной.
         _dashTimer = 0f;
         _dashAnticipationTimer = 0f;
+        _isDownDashing = false;
+
+        
     }
 
     private void Flip()
     {
-        if (_dashTimer > 0f || _dashAnticipationTimer > 0f) return;
+        if (_dashTimer > 0f || _dashAnticipationTimer > 0f || _isDownDashing) return;
+        DirectFlip();
+    }
 
+    private void DirectFlip()
+    {
         _facingRight = !_facingRight;
         transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 
+    private void SpawnPoundStone()
+    {
+        if (stonePrefab != null && groundCheck != null)
+        {
+            Instantiate(stonePrefab, stoneSpawnPoint.position, Quaternion.identity);
+        }
+    }
+
+    // ВОЗВРАЩЕНО И УЛУЧШЕНО: Метод экстренной остановки для менеджера респауна
     public void StopAllMovement()
     {
         _rb.linearVelocity = Vector2.zero;
         _dashTimer = 0f;
         _dashAnticipationTimer = 0f;
+        _isDownDashing = false; // Страховка от бесконечного падения после респауна
+
+        
         _moveInput = Vector2.zero;
-        _input.Player.Disable();
+        _currentDashDirection = 0f;
+        
+        if (_input != null)
+        {
+            _input.Player.Disable();
+        }
     }
 
     private void OnDrawGizmosSelected()

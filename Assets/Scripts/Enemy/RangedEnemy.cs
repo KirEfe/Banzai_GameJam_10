@@ -6,6 +6,7 @@ public class RangedEnemy : EnemyBase
     [Header("Патруль")]
     [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private float patrolDistance = 4f;
+    [SerializeField] private bool canTurn = true; // сними галочку для Сфинкса
 
     [Header("Дистанционная Атака")]
     [SerializeField] private float attackRange = 5f; // Большая дистанция атаки
@@ -109,6 +110,7 @@ public class RangedEnemy : EnemyBase
 
     private void AimAtPlayer()
     {
+        if (!canTurn) return; // Сфинкс не разворачивается
         Collider2D hit = Physics2D.OverlapCircle(transform.position, attackRange, playerLayer);
         if (hit == null) return;
 

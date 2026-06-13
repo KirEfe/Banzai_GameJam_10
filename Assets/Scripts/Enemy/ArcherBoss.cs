@@ -15,7 +15,7 @@ public class ArcherBoss : EnemyBase
     [SerializeField] private float timeBetweenBursts = 2f;
     [SerializeField] private float phase2BurstDelay = 1.5f;
     [SerializeField] private float phase3BurstDelay = 1f;
-    [SerializeField] private float projectileSpeed = 8f;
+    // [SerializeField] private float projectileSpeed = 8f;
 
     [Header("Прыжок")]
     [SerializeField] private int hitsBeforeJump = 3;
