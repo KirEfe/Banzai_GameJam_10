@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6150859269002112941}
   - component: {fileID: 824906902464001641}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: Spear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111,7 +111,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.23168945, y: 0}
+  m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -121,7 +121,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.676712, y: 0.1}
+  m_Size: {x: 2, y: 0.1}
   m_EdgeRadius: 0
 --- !u!1 &4225969826623118996
 GameObject:
@@ -204,8 +204,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -1464969562, guid: b95134f07a5ccf240aab601875838cce, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 1640411626, guid: ec90eec342da89148b9d47e10c664e68, type: 3}
+  m_Color: {r: 1, g: 0.4277596, b: 0.1273585, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

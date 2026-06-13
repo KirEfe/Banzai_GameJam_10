@@ -34,12 +34,12 @@ public class CinemachineZoomTrigger : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        // Игрок вышел -> роняем приоритет в 0 (Основная камера с приоритетом 10 побеждает)
-        if (other.CompareTag("Player") && zoneCamera != null)
-        {
-            zoneCamera.Priority = idlePriority;
-        }
-    }
+    // private void OnTriggerExit2D(Collider2D other)
+    // {
+    //     // Игрок вышел -> роняем приоритет в 0 (Основная камера с приоритетом 10 побеждает)
+    //     if (other.CompareTag("Player") && zoneCamera != null)
+    //     {
+    //         zoneCamera.Priority = idlePriority;
+    //     }
+    // }
 }
